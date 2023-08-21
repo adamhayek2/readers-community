@@ -34,13 +34,38 @@ const feed = async (req, res) => {
 
     const followingPosts = await Post.find({ user: { $in: followings } })
       .sort('-createdAt')
-      .populate('user', 'name'); // Populate the user field with username only
+      .populate('user', 'name');
     
       res.send(followingPosts)
+}
+
+const search = async (req, res) =>{
+    try{
+        const{query} = req.body;
+        console.log(query)
+
+        const searchResults = await Post.find({
+            $or: [
+                { book_name: { $regex: query, $options: 'i' } }, 
+                { author: { $regex: query, $options: 'i' } },
+                { review: { $regex: query, $options: 'i' } } 
+            ]
+        }).sort({
+            book_name: { $regex: query, $options: 'i' } ? -1 : 0,
+            author: { $regex: query, $options: 'i' } ? -1 : 0,
+            createdAt: -1 
+          })
+          .populate('user', 'username');
+
+        return res.status(200).json(searchResults );
+    }catch(error){
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
 module.exports = {
     getAllPosts,
     createPost,
-    feed
+    feed,
+    search
 }

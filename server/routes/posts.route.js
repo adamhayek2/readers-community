@@ -10,6 +10,8 @@ router.post("/", authMiddleware, postsControllers.createPost)
 
 router.get("/feed", authMiddleware, postsControllers.feed)
 
+router.get("/search", authMiddleware, postsControllers.search)
+
 
 
 module.exports = router
