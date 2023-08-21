@@ -3,14 +3,11 @@ const router = express.Router()
 const usersControllers = require("../controllers/users.controller")
 const authMiddleware = require("../middlewares/auth.middleware")
 
-router.get("/",authMiddleware, usersControllers.getAllUsers)
+router.get("/:id", authMiddleware, usersControllers.getUser)
 
-router.get("/:id", usersControllers.getUser)
+router.put("/:id", authMiddleware, usersControllers.editUser)
 
-router.post("/", usersControllers.createUser)
-
-router.put("/:id", usersControllers.editUser)
-
-router.delete("/:id", usersControllers.deleteUser)
+router.post("/follow/:id", authMiddleware, usersControllers.follow)
+router.post("/unfollow/:id", authMiddleware, usersControllers.unfollow)
 
 module.exports = router

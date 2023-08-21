@@ -1,9 +1,9 @@
-const connection = require("../configs/db.connection")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const User = require("../models/user.model")
 
 const login = async (req, res) => {
+
     const {email, password} = req.body;
 
     if(!email || !password) res.status(401).send({message: "Email and password are required"})
@@ -61,6 +61,7 @@ const register = async (req, res) => {
     
     }
     
-
 }
+
+
 module.exports = { login, register }
