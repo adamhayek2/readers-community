@@ -9,12 +9,6 @@ const getAllPosts = async (req, res) => {
 
 const getPost = async (req, res) =>{
 
-    // const {id} = req.params;
-
-    // const user = await User.findById(id).select("-password");
-
-    // res.send(user)
-
 }
 
 const createPost = async (req, res) => {
