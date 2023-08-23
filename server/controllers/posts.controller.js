@@ -1,5 +1,9 @@
 const Post = require("../models/post.model")
 const User = require("../models/user.model")
+const fs = require('fs');
+const path = require('path');
+const { promisify } = require('util');
+const writeFileAsync = promisify(fs.writeFile);
 
 const getAllPosts = async (req, res) => {
 
@@ -11,14 +15,33 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
     const userid = req.user;
-    
-    const { book_name, author, picture, review } = req.body;
+
+    const { book_name, author, picture: base64Picture, review } = req.body;
+
+    // Convert base64 image to image file
+    let picturePath = null;
+    let pictureFilename = null;
+    if (base64Picture) {
+        const base64Data = base64Picture.replace(/^data:image\/\w+;base64,/, "");
+        const imageBuffer = Buffer.from(base64Data, 'base64');
+        const pictureExtension = base64Picture.split(';')[0].split('/')[1];
+        pictureFilename = `${Date.now()}.${pictureExtension}`;
+        picturePath = path.join(__dirname, 'images', pictureFilename);
+
+        try {
+            await writeFileAsync(picturePath, imageBuffer);
+        } catch (error) {
+            console.error("Error saving image:", error);
+            res.status(500).send("Error saving image.");
+            return;
+        }
+    }
 
     const post = await new Post({
         user: userid,
         book_name,
         author,
-        picture,
+        picture: pictureFilename,
         review
     })
 
@@ -57,15 +80,34 @@ const search = async (req, res) =>{
           })
           .populate('user', 'username');
 
-        return res.status(200).json(searchResults );
+        return res.status(200).send(searchResults );
     }catch(error){
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).send({ message: 'Internal server error' });
     }
+}
+
+const like = async (req, res) => {
+    const userId = req.user;
+    const postId = req.params.postId
+
+    const currentPost = await Post.findById(postId);
+    if (!currentPost) return res.status(404).send({ message: 'Post not found' });
+
+    if(!currentPost.likes.includes(userId)) {
+        currentPost.likes.push(userId);
+        await currentPost.save();
+        return res.status(200).send({message: "Post liked successfully"})
+    }
+    currentPost.likes.pop(userId);
+    await currentPost.save();
+    return res.status(200).send({message: "Post disliked successfully"})
+
 }
 
 module.exports = {
     getAllPosts,
     createPost,
     feed,
-    search
+    search,
+    like
 }

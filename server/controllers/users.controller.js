@@ -7,7 +7,9 @@ const getUser = async (req, res) =>{
 
     const user = await User.findById(id).select("-password");
 
-    res.send(user)
+    const userPosts = await Post.find({ user: currentUser._id })
+
+    return res.status(200).send({user: user, posts: userPosts})
 
 }
 
@@ -20,7 +22,7 @@ const editUser = async (req, res) => {
         $set: {name}
     }, {new: true}).select("-password");
 
-    res.send(user)
+    return res.status(200).send(user)
 }
 
 const follow = async (req, res) => {
@@ -33,7 +35,7 @@ const follow = async (req, res) => {
         const userExist = await User.findById(userToFollow);
         if (!userExist) return res.status(404).send({ message: 'User not found' });
         
-        if(currentUser.following.includes(userToFollow)) return res.status(40).send({ message: 'User already followed' });
+        if(currentUser.following.includes(userToFollow)) return res.status(400).send({ message: 'User already followed' });
 
         currentUser.following.push(userToFollow);
         await currentUser.save();

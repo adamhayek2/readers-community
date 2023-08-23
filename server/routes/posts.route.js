@@ -12,6 +12,7 @@ router.get("/feed", authMiddleware, postsControllers.feed)
 
 router.get("/search", authMiddleware, postsControllers.search)
 
+router.get("/like/:postId", authMiddleware, postsControllers.like)
 
 
 module.exports = router
