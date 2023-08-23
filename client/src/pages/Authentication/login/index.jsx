@@ -34,17 +34,20 @@ const Authentication = () => {
       <div className="h-screen bg-gray-50 flex flex-col justify-center items-center">
             <div className="flex flex-column">
                 <div>
-                    <div className="bg-white border border-gray-300 w-80 pt-10 pb-60 flex items-center flex-col mb-3 relative">                        <form
+                    <div className="bg-white border border-gray-300 w-80 pt-10 pb-60 flex items-center flex-col mb-3 relative">                       
+                     <form
                             className="mt-8 w-64 flex flex-col"
                             onSubmit={handleSubmit}
-                    >
+                      >
                           <InputField
+                            className="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
                             type="text"
                             placeholder="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                           />
                           <InputField
+                            className="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
                             type="password"
                             placeholder="Password"
                             value={password}

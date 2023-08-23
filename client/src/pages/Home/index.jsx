@@ -4,7 +4,7 @@ import Posts from '../../components/posts'
 
 const Home = () => {
   return (
-    <div className='flex flex-row itens-center'>
+    <div className='flex flex-col itens-center'>
       <Navbar/>
       <Posts/>
     </div>

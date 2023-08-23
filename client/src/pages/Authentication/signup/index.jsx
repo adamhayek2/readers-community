@@ -42,18 +42,21 @@ const Signup = () => {
                             onSubmit={handleSubmit}
                         >
                             <InputField
+                                className="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
                                 type="text"
                                 placeholder="full name"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => setName(e.target.value)}
                             />
                             <InputField
+                                className="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
                                 type="text"
                                 placeholder="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <InputField
+                                className="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
                                 type="password"
                                 placeholder="Password"
                                 value={password}
